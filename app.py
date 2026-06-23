@@ -255,8 +255,7 @@ if st.session_state.analysis_done and st.session_state.results:
             f"""<tr>
                 <td>
                     <span style="position:relative; display:inline-block; cursor:help;">
-                        <b>{name}</b> <span style="color:#94a3b8;font-size:0.75rem;">?</span>
-                        <span style="
+                            <b>{name}</b> <span style="display:inline-flex;align-items:center;justify-content:center;width:14px;height:14px;background:#e2e8f0;color:#64748b;font-size:0.65rem;font-weight:700;border-radius:50%;margin-left:4px;">?</span>                        <span style="
                             visibility:hidden; opacity:0;
                             background:#f8fafc; color:#334155;
                             border:1px solid #e2e8f0;
