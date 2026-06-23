@@ -18,57 +18,41 @@ st.markdown("""
     }
     .block-container { padding-top: 1rem !important; padding-bottom: 1rem !important; max-width: 94% !important; }
 
-    .main-title { 
-        font-size: 2.4rem; font-weight: 800; color: #0f172a; letter-spacing: -1.5px; margin-bottom: 4px; text-align: center;
-    }
+    .main-title { font-size: 2.4rem; font-weight: 800; color: #0f172a; letter-spacing: -1.5px; margin-bottom: 4px; text-align: center; }
     .main-title span { color: #0284C7; }
     .subtitle { font-size: 1rem; color: #64748b; font-weight: 400; margin-top: 4px; padding-bottom: 10px; text-align: center; }
     
-    .section-header { 
-        font-size: 1rem; font-weight: 600; color: #334155; margin-top: 1rem; margin-bottom: 0.6rem; 
-        border-left: 3px solid #0284C7; padding-left: 10px;
-    }
+    .section-header { font-size: 1rem; font-weight: 600; color: #334155; margin-top: 1rem; margin-bottom: 0.6rem; border-left: 3px solid #0284C7; padding-left: 10px; }
     
-    .debug-card { 
-        background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; 
-        padding: 10px 16px; margin-bottom: 10px; box-shadow: 0 1px 4px rgba(0,0,0,0.06);
-    }
     .feature-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
     .feature-table th { background: #f1f5f9; color: #334155; font-weight: 600; padding: 6px 10px; text-align: left; border-bottom: 1px solid #e2e8f0; }
     .feature-table td { padding: 5px 10px; color: #475569; border-bottom: 1px solid #f1f5f9; font-family: 'Courier New', monospace; }
     .feature-table tr:last-child td { border-bottom: none; }
 
-    .dashboard-card { 
-        background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; 
-        padding: 12px 16px; margin-bottom: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    .report-card {
+        background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px;
+        padding: 20px 24px; margin-bottom: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.06);
     }
-    .card-rank { font-size: 0.82rem; font-weight: 700; color: #0284C7; margin-bottom: 2px; letter-spacing: 0.3px; }
-    .card-title { font-size: 1rem; font-weight: 700; margin-bottom: 2px; color: #0f172a; }
-    
-    .paper-card { 
-        background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; 
-        padding: 14px 16px; margin-top: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    .defect-badge {
+        display: inline-flex; align-items: center; gap: 8px;
+        background: #fff1f2; border: 1px solid #fecdd3; border-radius: 8px;
+        padding: 6px 14px; margin-bottom: 12px;
     }
-    .paper-tag { 
-        font-size: 0.72rem; font-weight: 700; color: #0284C7; 
-        background: #e0f2fe; padding: 2px 8px; border-radius: 20px; 
-        display: inline-block; margin-bottom: 8px; 
-    }
-    .paper-title { font-size: 0.92rem; font-weight: 700; color: #0f172a; margin-bottom: 4px; line-height: 1.4; }
-    .paper-journal { font-size: 0.78rem; color: #94a3b8; font-style: italic; margin-bottom: 10px; }
-    .paper-summary { font-size: 0.82rem; color: #475569; line-height: 1.6; }
-    .summary-point { display: flex; align-items: start; margin-bottom: 6px; }
-    .summary-icon { margin-right: 8px; color: #0284C7; font-weight: bold; font-size: 0.85rem; margin-top: 1px; }
-    .paper-action-link { 
-        display: inline-block; margin-top: 10px; color: #0284C7; text-decoration: none; 
-        font-size: 0.82rem; font-weight: 600; transition: color 0.2s; 
-    }
-    .paper-action-link:hover { color: #0369a1; text-decoration: underline; }
+    .defect-dot { width: 10px; height: 10px; background: #ef4444; border-radius: 50%; display: inline-block; }
+    .defect-code { font-size: 0.8rem; font-weight: 700; color: #ef4444; }
+    .defect-name { font-size: 1.3rem; font-weight: 800; color: #0f172a; margin-bottom: 8px; line-height: 1.3; }
+    .defect-desc { font-size: 0.88rem; color: #64748b; line-height: 1.6; }
 
-    .disclaimer-text { 
-        margin-top: 6px; margin-bottom: 10px; font-size: 0.72rem; 
-        color: #94a3b8; font-weight: 400; letter-spacing: -0.2px; 
+    .ref-card {
+        background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px;
+        padding: 16px 20px; margin-top: 12px;
     }
+    .ref-title { font-size: 0.85rem; font-weight: 700; color: #0f172a; margin-bottom: 4px; line-height: 1.4; }
+    .ref-meta { font-size: 0.75rem; color: #94a3b8; margin-bottom: 8px; }
+    .ref-link { font-size: 0.82rem; color: #0284C7; font-weight: 600; text-decoration: none; }
+    .ref-link:hover { text-decoration: underline; }
+
+    .disclaimer-text { margin-top: 8px; font-size: 0.72rem; color: #94a3b8; }
 
     .stButton>button { 
         background: linear-gradient(90deg, #0284C7, #0369a1) !important; 
@@ -97,28 +81,76 @@ except FileNotFoundError:
 
 PAPER_KNOWLEDGE_BASE = {
     "Mobile Ion Contamination (Hysteresis)": {
-        "title": "Effects of mobile ion contamination on the electrical characteristics of MOS devices",
-        "journal": "IEEE Transactions on Electron Devices",
-        "link": "https://scholar.google.com/scholar?q=MOSCAP+mobile+ion+hysteresis",
-        "summaries": ["알칼리 가동성 이온(Na+, K+)이 산화막 전계에 따라 유동적으로 이동하여 플랫밴드 전압(Vfb) 히스테리시스를 유발함.", "고온 고전압 스트레스 환경 하에서 소자의 기생 누설 전류를 증폭시키는 핵심 요인.", "해결을 위해 전공정 세정(Pre-cleaning) 단계 최적화 및 HCl 게터링 열처리 기술 적용이 요구됨."]
+        "title": "Mobile Ion Contamination (Hysteresis)",
+        "desc": "알칼리 가동성 이온(Na⁺, K⁺)이 산화막 전계에 따라 유동적으로 이동하여 플랫밴드 전압(Vfb) 히스테리시스를 유발합니다. 고온 고전압 스트레스 환경에서 기생 누설 전류를 증폭시키는 핵심 요인입니다.",
+        "papers": [
+            {
+                "title": "Effects of mobile ion contamination on the electrical characteristics of MOS devices",
+                "journal": "IEEE Transactions on Electron Devices",
+                "link": "https://scholar.google.com/scholar?q=MOSCAP+mobile+ion+hysteresis",
+                "summary": "알칼리 가동성 이온(Na+, K+)이 산화막 전계에 따라 유동적으로 이동하여 플랫밴드 전압(Vfb) 히스테리시스를 유발함. 해결을 위해 전공정 세정 단계 최적화 및 HCl 게터링 열처리 기술 적용이 요구됨."
+            },
+            {
+                "title": "Mobile ion drift in MOS structures during high-temperature stress",
+                "journal": "Journal of Applied Physics",
+                "link": "https://scholar.google.com/scholar?q=mobile+ion+drift+MOS+high+temperature",
+                "summary": "고온 고전압 스트레스 환경 하에서 소자의 기생 누설 전류를 증폭시키는 핵심 요인. PDA 공정 온도 최적화 및 프리클리닝 이온 세정 강화가 필요함."
+            }
+        ]
     },
     "Interface Trap Density Increase (Stretch-out)": {
-        "title": "Characterization of interface traps in MOS structures by capacitance-voltage methods",
-        "journal": "Solid-State Electronics",
-        "link": "https://scholar.google.com/scholar?q=MOSCAP+interface+trap+stretch+out",
-        "summaries": ["실리콘 기판과 게이트 절연막 간 계면 불포화 결합(Dangling bonds)에 의해 트랩 전하 밀도(Dit)가 상승함.", "인가 게이트 바이어스 변화 시 트랩 전하의 충방전 지연으로 인하여 전체 C-V 커브의 기울기를 납작하게(Stretch-out) 늘어뜨림.", "포밍 가스 어닐링(Forming Gas Annealing, FGA) 공정을 이용한 계면 수소 패시베이션 처리가 필수적임."]
+       "title": "Interface Trap Density Increase (Stretch-out)",
+        "desc": "실리콘 기판과 게이트 절연막 간 계면 불포화 결합(Dangling bonds)에 의해 트랩 전하 밀도(Dit)가 상승합니다. 게이트 바이어스 변화 시 트랩 전하의 충방전 지연으로 C-V 커브의 기울기가 완만해지는 Stretch-out 현상이 나타납니다.",
+        "papers": [
+            {
+                "title": "Characterization of interface traps in MOS structures by capacitance-voltage methods",
+                "journal": "Solid-State Electronics",
+                "link": "https://scholar.google.com/scholar?q=MOSCAP+interface+trap+stretch+out",
+                "summary": "실리콘 기판과 게이트 절연막 간 계면 불포화 결합에 의해 트랩 전하 밀도(Dit)가 상승함. 인가 게이트 바이어스 변화 시 트랩 전하의 충방전 지연으로 C-V 커브 기울기가 완만해짐."
+            },
+            {
+                "title": "Hydrogen passivation of interface traps in MOS devices",
+                "journal": "Applied Physics Letters",
+                "link": "https://scholar.google.com/scholar?q=hydrogen+passivation+interface+traps+MOS",
+                "summary": "포밍 가스 어닐링(FGA) 공정을 이용한 계면 수소 패시베이션 처리가 Dit 저감에 필수적임. 수소 분위기 열처리로 댕글링 본드를 효과적으로 제거 가능함."
+            }
+        ]
     },
     "Oxide Thickness Out-of-Spec (Cmax Decrease)": {
-        "title": "Impact of ultra-thin gate oxide thickness variations on MOS capacitance",
-        "journal": "Journal of Applied Physics",
-        "link": "https://scholar.google.com/scholar?q=MOSCAP+oxide+thickness+variation",
-        "summaries": ["물리적 산화막 증착 두께(Tox)가 관리 공정 한계를 초과하여 두꺼워지거나 유전율이 감소하면 타겟 Cmax 확보가 불가능함.", "원인으로 ALD/CVD 장비 내 소스 분사 불균일 혹은 공정 온도 제어성 손실이 핵심 인자로 파악됨.", "박막 증착 속도 프로파일 재검증 및 유전막 증착 전후 직렬 저항(Series Resistance) 성분 필터링 수반 권장."]
+        "title": "Oxide Thickness Out-of-Spec (Cmax Decrease)",
+        "desc": "물리적 산화막 증착 두께(Tox)가 관리 공정 한계를 초과하거나 유전율이 감소하면 타겟 Cmax 확보가 불가능합니다. ALD/CVD 장비 내 소스 분사 불균일 혹은 공정 온도 제어성 손실이 핵심 원인입니다.",
+        "papers": [
+            {
+                "title": "Impact of ultra-thin gate oxide thickness variations on MOS capacitance",
+                "journal": "Journal of Applied Physics",
+                "link": "https://scholar.google.com/scholar?q=MOSCAP+oxide+thickness+variation",
+                "summary": "물리적 산화막 증착 두께가 관리 공정 한계를 초과하면 타겟 Cmax 확보가 불가능함. ALD/CVD 장비 내 소스 분사 불균일 혹은 공정 온도 제어성 손실이 핵심 인자."
+            },
+            {
+                "title": "ALD gate oxide uniformity control in advanced CMOS",
+                "journal": "IEEE Electron Device Letters",
+                "link": "https://scholar.google.com/scholar?q=ALD+gate+oxide+uniformity+CMOS",
+                "summary": "박막 증착 속도 프로파일 재검증 및 유전막 증착 전후 직렬 저항 성분 필터링 수반 권장. ALD 공정 균일도 개선이 Cmax 편차 감소에 직결됨."
+            }
+        ]
     },
     "Measurement Setup Noise (Noise Spike)": {
-        "title": "Noise reduction techniques in high-frequency C-V characterization",
-        "journal": "Review of Scientific Instruments",
-        "link": "https://scholar.google.com/scholar?q=C-V+measurement+noise+reduction",
-        "summaries": ["계측 장비 프로브 스테이션 팁 오염으로 인한 고접촉 저항 성분 형성 및 외부 전자기 노이즈가 유입되어 불규칙한 고주파 스파이크 생성.", "전송 선로 간 임피던스 불일치 및 미세 기생 인덕턴스가 고주파 분석 정확도를 전반적으로 저해함.", "장비 본체의 Open/Short/Load 정밀 캘리브레이션을 재실행하고 내부 도선 동축 차폐회로(Shielding) 강화 조치 필요."]
+        "title": "Measurement Setup Noise (Noise Spike)",
+        "desc": "계측 장비 프로브 스테이션 팁 오염으로 인한 고접촉 저항 성분 형성 및 외부 전자기 노이즈가 유입되어 불규칙한 고주파 스파이크가 발생합니다. 전송 선로 간 임피던스 불일치 및 기생 인덕턴스가 고주파 분석 정확도를 저해합니다.",
+        "papers": [
+            {
+                "title": "Noise reduction techniques in high-frequency C-V characterization",
+                "journal": "Review of Scientific Instruments",
+                "link": "https://scholar.google.com/scholar?q=C-V+measurement+noise+reduction",
+                "summary": "계측 장비 프로브 팁 오염으로 인한 고접촉 저항 성분 형성 및 외부 전자기 노이즈 유입으로 고주파 스파이크 생성. Open/Short/Load 정밀 캘리브레이션 재실행 필요."
+            },
+            {
+                "title": "Probe contact resistance effects in semiconductor C-V measurements",
+                "journal": "Measurement Science and Technology",
+                "link": "https://scholar.google.com/scholar?q=probe+contact+resistance+CV+measurement",
+                "summary": "전송 선로 간 임피던스 불일치 및 미세 기생 인덕턴스가 고주파 분석 정확도를 저해함. 동축 차폐회로(Shielding) 강화 조치 필요."
+            }
+        ]
     }
 }
 
@@ -146,13 +178,11 @@ def extract_features(v, c, c_clean):
     else: hysteresis_proxy = 0.0
     return np.nan_to_num([float(cmax), float(cmin), float(cmax_cmin_ratio), float(slope_max), float(slope_std), float(noise_std), hysteresis_proxy], nan=0.0, posinf=0.0, neginf=0.0).tolist()
 
-# ── Session State ──
 if 'analysis_done' not in st.session_state:
     st.session_state.analysis_done = False
 if 'results' not in st.session_state:
     st.session_state.results = None
 
-# ── Main UI ──
 st.markdown('<div class="main-title">🔬 <span>MOS-ZERO</span> Error Analyzer</div>', unsafe_allow_html=True)
 st.markdown('<div class="subtitle">반도체 소자 C-V 오류 데이터 정밀 분석 및 학술 솔루션 매칭 시스템</div>', unsafe_allow_html=True)
 
@@ -197,7 +227,6 @@ if uploaded:
 
 st.divider()
 
-# ── 결과 표시 ──
 if st.session_state.analysis_done and st.session_state.results:
     r = st.session_state.results
 
@@ -226,7 +255,7 @@ if st.session_state.analysis_done and st.session_state.results:
         feature_names = ["Cmax", "Cmin", "Ratio", "Slope Max", "Slope Std", "Noise Std", "Hysteresis"]
         rows = "".join([f"<tr><td><b>{feature_names[i]}</b></td><td>{round(f[i], 6)}</td></tr>" for i in range(len(f))])
         st.markdown(f"""
-        <div class="debug-card">
+        <div style="background:#ffffff; border:1px solid #e2e8f0; border-radius:12px; padding:10px 16px; box-shadow:0 1px 4px rgba(0,0,0,0.06);">
             <table class="feature-table">
                 <tr><th>항목</th><th>값</th></tr>
                 {rows}
@@ -234,32 +263,33 @@ if st.session_state.analysis_done and st.session_state.results:
         </div>
         """, unsafe_allow_html=True)
 
-    # 1위 2위 나란히
-    st.markdown("<div class='section-header'>📋 진단 리포트</div>", unsafe_allow_html=True)
+    st.markdown("<div class='section-header'>📋 소자 불량 진단 리포트</div>", unsafe_allow_html=True)
     col_left, col_right = st.columns(2)
     rank_labels = ["🥇 1위 최유력 오류 요인", "🥈 2위 복합 가능성 요인"]
     cols = [col_left, col_right]
 
     for i, (assigned_category, prob) in enumerate(r['top2']):
         with cols[i]:
+            info = PAPER_KNOWLEDGE_BASE.get(assigned_category, None)
+            desc = info["desc"] if info else ""
+
             st.markdown(f"""
-            <div class="dashboard-card">
-                <div class="card-rank">{rank_labels[i]}</div>
-                <div class="card-title">{assigned_category}</div>
+            <div class="report-card">
+                <div style="font-size:0.82rem; font-weight:700; color:#64748b; margin-bottom:8px;">{rank_labels[i]}</div>
+                <div class="defect-name">{assigned_category}</div>
+                <div class="defect-desc">{desc}</div>
             </div>
             """, unsafe_allow_html=True)
 
-            if assigned_category in PAPER_KNOWLEDGE_BASE:
-                paper = PAPER_KNOWLEDGE_BASE[assigned_category]
-                summary_html = "".join([f"<div class='summary-point'><span class='summary-icon'>•</span><div>{s}</div></div>" for s in paper["summaries"]])
-
-                st.markdown(f"""
-                <div class="paper-card">
-                    <div class="paper-tag">{i+1}위 요인 연계 SCI Journal Insights</div>
-                    <div class="paper-title">{paper['title']}</div>
-                    <div class="paper-journal">{paper['journal']}</div>
-                    <div class="paper-summary">{summary_html}</div>
-                    <div><a href="{paper['link']}" target="_blank" class="paper-action-link">Google Scholar에서 원문 확인하기 →</a></div>
-                </div>
-                <div class="disclaimer-text">※ 본 논문의 요약은 AI가 수행한 것으로 정확하지 않을 수도 있습니다.</div>
-                """, unsafe_allow_html=True)
+            if info and info.get("papers"):
+               with st.expander("📚 관련 논문 보기"):
+                    for j, paper in enumerate(info["papers"]):
+                        st.markdown(f"""
+                        <div class="ref-card">
+                            <div class="ref-title">📄 {paper['title']}</div>
+                            <div class="ref-meta">{paper['journal']}</div>
+                            <div style="font-size:0.82rem; color:#475569; line-height:1.6; margin:8px 0;">{paper['summary']}</div>
+                            <a href="{paper['link']}" target="_blank" class="ref-link">원문 보기 ↗</a>
+                        </div>
+                        """, unsafe_allow_html=True)
+                    st.markdown('<div class="disclaimer-text">※ 본 논문 정보는 AI가 매칭한 것으로 정확하지 않을 수 있습니다.</div>', unsafe_allow_html=True)
