@@ -65,6 +65,15 @@ st.markdown("""
     .stFileUploader { background: #ffffff !important; border-radius: 12px !important; }
     div[data-testid="stFileUploader"] { background: #ffffff; border-radius: 12px; padding: 8px; }
     header[data-testid="stHeader"] { background: transparent !important; }
+
+    @media screen and (max-width: 768px) {
+    .main-title { font-size: 1.6rem !important; }
+    .subtitle { font-size: 0.85rem !important; }
+    .defect-name { font-size: 1rem !important; }
+    .ref-title { font-size: 0.8rem !important; }
+    .paper-summary { font-size: 0.78rem !important; }
+    .block-container { padding-top: 0.5rem !important; max-width: 100% !important; }
+}        
 </style>
 """, unsafe_allow_html=True)
 
