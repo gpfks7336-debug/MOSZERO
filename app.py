@@ -66,6 +66,22 @@ st.markdown("""
         .defect-name-2 { font-size: 1rem !important; }
         .block-container { padding-top: 0.5rem !important; max-width: 100% !important; }
     }
+            
+    .tooltip-wrap { position: relative; display: inline-block; cursor: help; }
+   .tooltip-wrap .tooltip-box {
+        visibility: hidden; opacity: 0;
+        background: #f8fafc; color: #334155;
+        border: 1px solid #e2e8f0;
+        font-size: 0.75rem; line-height: 1.5;
+        padding: 8px 12px; border-radius: 8px;
+        position: absolute; z-index: 999;
+        left: 110%; top: 50%; transform: translateY(-50%);
+        width: 280px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        transition: opacity 0.2s;
+        white-space: normal;
+    }
+    }
+    .tooltip-wrap:hover .tooltip-box { visibility: visible; opacity: 1; }
 </style>
 """, unsafe_allow_html=True)
 
@@ -227,19 +243,49 @@ if st.session_state.analysis_done and st.session_state.results:
         st.markdown("<div class='section-header'>⚙️ 특징값 분석</div>", unsafe_allow_html=True)
         f = r['features']
         feature_data = [
-            ("Cmax", round(f[0], 6), "최대 정전용량"),
-            ("Cmin", round(f[1], 6), "최소 정전용량"),
-            ("Ratio", round(f[2], 6), "Cmax/Cmin 비율"),
-            ("Slope Max", round(f[3], 6), "전이 영역 최대 기울기"),
-            ("Slope Std", round(f[4], 6), "기울기 표준편차"),
-            ("Noise Std", round(f[5], 6), "노이즈 크기"),
-            ("Hysteresis", round(f[6], 6), "양방향 스윕 평행이동"),
+            ("Cmax", round(f[0], 6), "최대 정전용량. 축적 영역에서의 최대값. 산화막 두께와 반비례."),
+            ("Cmin", round(f[1], 6), "최소 정전용량. 공핍 영역에서의 최소값."),
+            ("Ratio", round(f[2], 6), "Cmax/Cmin 비율. 낮으면 산화막 이상 의심."),
+            ("Slope Max", round(f[3], 6), "전이 영역에서 가장 급격한 기울기값."),
+            ("Slope Std", round(f[4], 6), "기울기의 표준편차. 커브 균일성 지표."),
+            ("Noise Std", round(f[5], 6), "노이즈 크기. 원본과 필터 차이. 클수록 노이즈 많음."),
+            ("Hysteresis", round(f[6], 6), "양방향 스윕 시 평행이동 정도. 0에 가까울수록 정상."),
         ]
-        rows = "".join([f"<tr><td><b>{name}</b></td><td style='font-family:Courier New,monospace;'>{val}</td><td style='color:#94a3b8;font-size:0.78rem;'>{desc}</td></tr>" for name, val, desc in feature_data])
+        rows = "".join([
+            f"""<tr>
+                <td>
+                    <span style="position:relative; display:inline-block; cursor:help;">
+                        <b>{name}</b> <span style="color:#94a3b8;font-size:0.75rem;">?</span>
+                        <span style="
+                            visibility:hidden; opacity:0;
+                            background:#f8fafc; color:#334155;
+                            border:1px solid #e2e8f0;
+                            font-size:0.75rem; line-height:1.5;
+                            padding:8px 12px; border-radius:8px;
+                            position:absolute; z-index:9999;
+                            left:110%; top:50%; transform:translateY(-50%);
+                            width:280px; box-shadow:0 4px 12px rgba(0,0,0,0.1);
+                            white-space:normal;
+                            transition:opacity 0.2s;
+                            pointer-events:none;
+                        " class="tip-{name.replace(' ','-')}">{tip}</span>
+                    </span>
+                </td>
+                <td style="font-family:Courier New,monospace;">{val}</td>
+            </tr>"""
+            for name, val, tip in feature_data
+        ])
+        
+        hover_css = "".join([
+            f"span:has(.tip-{name.replace(' ','-')}):hover .tip-{name.replace(' ','-')} {{ visibility:visible !important; opacity:1 !important; }}"
+            for name, _, _ in feature_data
+        ])
+        
         st.markdown(f"""
+        <style>{hover_css}</style>
         <div style="background:#ffffff; border:1px solid #e2e8f0; border-radius:12px; padding:10px 16px; box-shadow:0 1px 4px rgba(0,0,0,0.06);">
             <table class="feature-table">
-                <tr><th>항목</th><th>값</th><th>의미</th></tr>
+                <tr><th>항목</th><th>값</th></tr>
                 {rows}
             </table>
         </div>
