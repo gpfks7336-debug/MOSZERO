@@ -291,14 +291,14 @@ if st.session_state.analysis_done and st.session_state.results:
             """, unsafe_allow_html=True)
 
             if info and info.get("papers"):
-               with st.expander("📚 관련 논문 보기"):
+                with st.expander("📚 관련 논문 보기"):
                     for j, paper in enumerate(info["papers"]):
-                        st.markdown(f"""
-                        <div class="ref-card">
-                            <div class="ref-title">📄 {paper['title']}</div>
-                            <div class="ref-meta">{paper['journal']}</div>
-                            <div style="font-size:0.82rem; color:#475569; line-height:1.6; margin:8px 0;">{paper['summary']}</div>
-                            <a href="{paper['link']}" target="_blank" class="ref-link">원문 보기 ↗</a>
-                        </div>
-                        """, unsafe_allow_html=True)
+                        with st.expander(f"📄 {paper['title']}"):
+                            st.markdown(f"""
+                            <div class="ref-card">
+                                <div class="ref-meta">{paper['journal']}</div>
+                                <div style="font-size:0.82rem; color:#475569; line-height:1.6; margin:8px 0;">{paper['summary']}</div>
+                                <a href="{paper['link']}" target="_blank" class="ref-link">원문 보기 ↗</a>
+                            </div>
+                            """, unsafe_allow_html=True)
                     st.markdown('<div class="disclaimer-text">※ 본 논문 정보는 AI가 매칭한 것으로 정확하지 않을 수 있습니다.</div>', unsafe_allow_html=True)
