@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MOS-ZERO Error Analyzer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Lora:ital,wght@0,400;0,500;1,400&family=Noto+Sans+KR:wght@300;400;500&family=Noto+Serif+KR:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+  <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+</head>
+<body>
+  <div class="container">
+
+    <header>
+      <div class="header-row">
+        <div>
+          <h1 class="main-title">
+            <span class="accent">MOS-ZERO</span>
+            <span class="title-rest"> Error Analyzer</span>
+          </h1>
+          <p class="subtitle">C-V 불량 원인 분류 및 학술 문헌 매칭 시스템</p>
+        </div>
+        <div class="theme-switcher" role="group" aria-label="테마 선택">
+          <button class="theme-btn active" id="themeLight">Light</button>
+          <button class="theme-btn" id="themeDark">Dark</button>
+        </div>
+      </div>
+    </header>
+
+    {% if not models_ok %}
+    <div class="error-banner">
+      모델 파일을 찾을 수 없습니다. <code>output/hybrid_models.pkl</code> 을 확인해주세요.
+    </div>
+    {% else %}
+
+    <!-- Step indicator -->
+    <div class="step-bar">
+      <div class="step active" id="step1">
+        <span class="step-num">1</span>
+        <span class="step-label">데이터 로드</span>
+      </div>
+      <span class="step-arrow">—</span>
+      <div class="step" id="step2">
+        <span class="step-num">2</span>
+        <span class="step-label">축 매핑</span>
+      </div>
+      <span class="step-arrow">—</span>
+      <div class="step" id="step3">
+        <span class="step-num">3</span>
+        <span class="step-label">분석</span>
+      </div>
+    </div>
+
+    <!-- Upload -->
+    <section>
+      <div class="upload-area" id="uploadArea">
+        <input type="file" id="fileInput" accept=".csv,.txt" hidden />
+        <div class="upload-icon-wrap">
+          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none"
+               stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+            <polyline points="17 8 12 3 7 8"/>
+            <line x1="12" y1="3" x2="12" y2="15"/>
+          </svg>
+        </div>
+        <div class="upload-text-block">
+          <div class="upload-label">측정 데이터 파일 선택</div>
+          <div class="upload-hint">CSV / TXT — 구분자 자동 감지</div>
+        </div>
+      </div>
+      <div class="file-name hidden" id="fileName"></div>
+    </section>
+
+    <!-- Column selectors -->
+    <div id="colSelectArea" class="hidden">
+      <div class="col-row">
+        <div class="col-group">
+          <label class="col-label">Gate Voltage (X)</label>
+          <select id="vCol" class="col-select"></select>
+        </div>
+        <div class="col-group">
+          <label class="col-label">Capacitance (Y)</label>
+          <select id="cCol" class="col-select"></select>
+        </div>
+        <div class="col-group col-btn">
+          <button id="analyzeBtn" class="btn-primary">분석 실행</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="loadingArea" class="loading-area hidden">
+      <div class="spinner"></div>
+      <span>분석 중...</span>
+    </div>
+
+    <div id="errorArea" class="error-banner hidden"></div>
+
+    <!-- Results -->
+    <div id="resultsSection" class="hidden">
+      <hr class="divider" />
+
+      <div class="results-grid">
+        <div>
+          <div class="section-label">Signal Analysis</div>
+          <div id="plotlyChart"></div>
+        </div>
+        <div>
+          <div class="section-label">Extracted Features</div>
+          <div class="data-card">
+            <table class="feature-table">
+              <thead><tr><th>Parameter</th><th>Value</th></tr></thead>
+              <tbody id="featureBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-label" style="margin-top: 2.25rem;">Diagnostic Report</div>
+      <div id="reportGrid"></div>
+    </div>
+
+    {% endif %}
+  </div>
+
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

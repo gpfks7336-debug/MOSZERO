@@ -1,6 +1,7 @@
-streamlit
+flask
 numpy
 pandas
 plotly
 scikit-learn
 scipy
+gunicorn
