@@ -9,6 +9,134 @@
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Lora:ital,wght@0,400;0,500;1,400&family=Noto+Sans+KR:wght@300;400;500&family=Noto+Serif+KR:wght@300;400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
   <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+
+  <style>
+    /* 참조 문헌 영역 컨테이너 */
+    .references-section {
+      margin-top: 24px;
+      padding-top: 16px;
+      border-top: 1px dashed #e5e7eb;
+    }
+
+    .references-title {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #94a3b8;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 14px;
+    }
+
+    .papers-container {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      margin-top: 12px;
+    }
+
+    /* 정갈한 학술지 카드 개별 레이아웃 */
+    .academic-card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.03);
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      position: relative;
+    }
+
+    .academic-card:hover {
+      transform: translateY(-2px);
+      border-color: #cbd5e1;
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.04), 0 4px 6px -4px rgba(0, 0, 0, 0.02);
+    }
+
+    /* 논문 제목 위계 강화 */
+    .academic-title {
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: #0f172a;
+      line-height: 1.4;
+      margin: 0;
+      padding-right: 100px; /* 버튼과 겹침 방지 여백 */
+    }
+
+    /* 학술지 메타데이터 정보 */
+    .academic-meta {
+      font-size: 0.85rem;
+      color: #64748b;
+      font-style: italic;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: -4px;
+    }
+
+    .academic-meta::before {
+      content: "📄";
+      font-style: normal;
+      font-size: 0.9rem;
+    }
+
+    /* 부드러운 분리형 AI 요약 인터페이스 */
+    .ai-summary-box {
+      background-color: #f8fafc;
+      border-left: 4px solid #2563eb; /* 신뢰감을 주는 블루 포인트 바 */
+      padding: 12px 16px;
+      border-radius: 0 8px 8px 0;
+    }
+
+    .ai-summary-tag {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #2563eb;
+      letter-spacing: 0.02em;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .ai-summary-tag::before {
+      content: "✦";
+    }
+
+    .ai-summary-text {
+      font-size: 0.9rem;
+      color: #334155;
+      line-height: 1.55;
+      margin: 0;
+      word-break: keep-all;
+    }
+
+    /* 우측 하단 정렬형 액션 버튼 */
+    .view-paper-btn {
+      align-self: flex-end;
+      background-color: #ffffff;
+      color: #2563eb;
+      border: 1px solid #e2e8f0;
+      padding: 7px 16px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      border-radius: 6px;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.02);
+      transition: all 0.2s ease;
+      margin-top: 4px;
+    }
+
+    .view-paper-btn:hover {
+      background-color: #2563eb;
+      color: #ffffff;
+      border-color: #2563eb;
+    }
+  </style>
 </head>
 <body>
   <div class="container">
@@ -35,7 +163,6 @@
     </div>
     {% else %}
 
-    <!-- Step indicator -->
     <div class="step-bar">
       <div class="step active" id="step1">
         <span class="step-num">1</span>
@@ -53,7 +180,6 @@
       </div>
     </div>
 
-    <!-- Upload -->
     <section>
       <div class="upload-area" id="uploadArea">
         <input type="file" id="fileInput" accept=".csv,.txt" hidden />
@@ -73,7 +199,6 @@
       <div class="file-name hidden" id="fileName"></div>
     </section>
 
-    <!-- Column selectors -->
     <div id="colSelectArea" class="hidden">
       <div class="col-row">
         <div class="col-group">
@@ -97,7 +222,6 @@
 
     <div id="errorArea" class="error-banner hidden"></div>
 
-    <!-- Results -->
     <div id="resultsSection" class="hidden">
       <hr class="divider" />
 

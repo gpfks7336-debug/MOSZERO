@@ -196,6 +196,9 @@
     });
   }
 
+  // ========================================================
+  // 10년 차 UI 전문가 개조 구역: 논문 리스트 레이아웃 전면 수정
+  // ========================================================
   function renderReport(top2) {
     const grid = document.getElementById('reportGrid');
     grid.innerHTML = '';
@@ -207,39 +210,35 @@
 
       let refHtml = '';
       if (item.papers?.length) {
-        const extLinkIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>`;
-
+        // 기존 밋밋한 리스트를 우리가 index.html에 추가한 고성능 카드 형태로 조립합니다.
         const refItems = item.papers.map((p, j) => `
-          <div class="ref-card">
-            <div class="ref-card-header">
-              <div class="ref-card-num">${j + 1}</div>
-              <div class="ref-card-content">
-                <div class="ref-card-title">${escHtml(p.title)}</div>
-                <div class="ref-card-meta">${escHtml(p.journal)}</div>
-              </div>
+          <div class="academic-card">
+            <h4 class="academic-title">${escHtml(p.title)}</h4>
+            <div class="academic-meta">${escHtml(p.journal)}</div>
+            <div class="ai-summary-box">
+              <span class="ai-summary-tag">AI 분석 핵심 요약 및 인사이트</span>
+              <p class="ai-summary-text">${escHtml(p.summary)}</p>
             </div>
-            <div class="ref-card-insight">
-              <span class="ref-card-insight-label">AI Insight</span>
-              <p class="ref-card-insight-text">${escHtml(p.summary)}</p>
-            </div>
-            <div class="ref-card-footer">
-              <a href="${escHtml(p.link)}" target="_blank" rel="noopener noreferrer" class="ref-card-link">
-                ${extLinkIcon} View full paper
-              </a>
-            </div>
+            <a href="${escHtml(p.link)}" target="_blank" rel="noopener noreferrer" class="view-paper-btn">
+              원문 보기 ➔
+            </a>
           </div>
         `).join('');
 
         refHtml = `
-          <div class="ref-section">
+          <div class="ref-section" style="margin-top: 20px;">
             <button class="ref-toggle-btn" onclick="toggleAccordion(this)">
               <span class="ref-header-label">References</span>
               <span class="ref-header-rule"></span>
               <span class="ref-chevron">▾</span>
             </button>
             <div class="ref-entries hidden">
-              ${refItems}
-              <div class="disclaimer">※ 본 논문 정보는 AI가 매칭한 것으로 정확하지 않을 수 있습니다.</div>
+              <div class="papers-container">
+                ${refItems}
+              </div>
+              <div class="disclaimer" style="margin-top: 12px; font-size: 0.8rem; color: #94a3b8; font-style: normal;">
+                ※ 본 논문 정보는 AI가 매칭한 것으로 정확하지 않을 수 있습니다.
+              </div>
             </div>
           </div>
         `;
