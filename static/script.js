@@ -161,13 +161,20 @@
     Plotly.react('plotlyChart', chartObj.data, chartObj.layout);
   }
 
+  // 💡 [물음표 ? 툴팁 완벽 복구 구역]
   function renderFeatureTable(features) {
     const tbody = document.getElementById('featureBody');
     tbody.innerHTML = '';
     features.forEach(f => {
       const tr = document.createElement('tr');
       tr.innerHTML = `
-        <td><strong style="font-weight:600; color:#78716c;">${escHtml(f.name)}</strong></td>
+        <td>
+          <span class="tip-wrap">
+            <strong style="font-weight:600; color:#44403c;">${escHtml(f.name)}</strong>
+            <span class="tip-badge">?</span>
+            <span class="tip-text">${escHtml(f.tip)}</span>
+          </span>
+        </td>
         <td class="mono">${f.value}</td>
       `;
       tbody.appendChild(tr);
@@ -201,7 +208,6 @@
           </div>
         `).join('');
 
-        // 💡 누르면 스르륵 열리는 아코디언 토글 양식 원상복구 조치
         refHtml = `
           <div class="ref-section" style="margin-top: 12px; border-top: 1px dashed #e3e2dd; padding-top: 8px;">
             <button class="ref-toggle-btn" onclick="toggleAccordion(this)">
@@ -228,7 +234,6 @@
     });
   }
 
-  // ── Global accordion toggle 복구 ──
   window.toggleAccordion = btn => {
     const content = btn.nextElementSibling;
     const opening = content.classList.contains('hidden');
