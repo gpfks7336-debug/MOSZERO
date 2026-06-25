@@ -130,7 +130,7 @@
       chartObj.layout.plot_bgcolor  = '#1c1917';
       if (chartObj.layout.xaxis) { chartObj.layout.xaxis.gridcolor = '#3a3531'; chartObj.layout.xaxis.color = '#a8a29e'; }
       if (chartObj.layout.yaxis) { chartObj.layout.yaxis.gridcolor = '#3a3531'; chartObj.layout.yaxis.color = '#a8a29e'; }
-      chartObj.layout.font = { ...(chartObj.layout.font || {}), color: '#a8a29e', family: 'Inter, sans-serif', size: 12 };
+      chartObj.layout.font = { ...(chartObj.layout.font || {}), color: '#a8a29e', family: 'Pretendard, sans-serif', size: 12 };
       if (chartObj.data?.[0]?.marker) chartObj.data[0].marker.color = '#524b45';
       if (chartObj.data?.[1]?.line)   chartObj.data[1].line.color   = '#e2e1da';
     } else {
@@ -138,9 +138,9 @@
       chartObj.layout.plot_bgcolor  = '#ffffff';
       if (chartObj.layout.xaxis) { chartObj.layout.xaxis.gridcolor = '#e3e2dd'; chartObj.layout.xaxis.color = '#78716c'; }
       if (chartObj.layout.yaxis) { chartObj.layout.yaxis.gridcolor = '#e3e2dd'; chartObj.layout.yaxis.color = '#78716c'; }
-      chartObj.layout.font = { ...(chartObj.layout.font || {}), color: '#292524', family: 'Inter, sans-serif', size: 12 };
+      chartObj.layout.font = { ...(chartObj.layout.font || {}), color: '#292524', family: 'Pretendard, sans-serif', size: 12 };
       if (chartObj.data?.[0]?.marker) chartObj.data[0].marker.color = '#cbd5e1';
-      if (chartObj.data?.[1]?.line)   chartObj.data[1].line.color   = '#44403c';
+      if (chartObj.data?.[1]?.line)   chartObj.data[1].line.color   = '#2563eb';
     }
     return chartObj;
   }
@@ -161,7 +161,7 @@
     Plotly.react('plotlyChart', chartObj.data, chartObj.layout);
   }
 
-  // 💡 [물음표 ? 툴팁 완벽 복구 구역]
+  // 💡 [HTML 구조 매칭 완료]: tip-text가 tip-badge 내부에 정렬 타겟으로 종속됨
   function renderFeatureTable(features) {
     const tbody = document.getElementById('featureBody');
     tbody.innerHTML = '';
@@ -170,9 +170,11 @@
       tr.innerHTML = `
         <td>
           <span class="tip-wrap">
-            <strong style="font-weight:600; color:#44403c;">${escHtml(f.name)}</strong>
-            <span class="tip-badge">?</span>
-            <span class="tip-text">${escHtml(f.tip)}</span>
+            <strong style="font-weight:600; color:inherit;">${escHtml(f.name)}</strong>
+            <span class="tip-badge">
+              ?
+              <span class="tip-text">${escHtml(f.tip)}</span>
+            </span>
           </span>
         </td>
         <td class="mono">${f.value}</td>
@@ -181,6 +183,7 @@
     });
   }
 
+  // 🌟 심사위원 맞춤형 "불량 유형 매칭 확률" 게이지 바 연동
   function renderReport(top2) {
     const grid = document.getElementById('reportGrid');
     grid.innerHTML = '';
@@ -188,9 +191,7 @@
 
     top2.forEach((item, i) => {
       const card = document.createElement('div');
-      card.style.display = 'flex';
-      card.style.flexDirection = 'column';
-      card.style.gap = '12px';
+      card.className = 'diagnostic-card';
 
       let refHtml = '';
       if (item.papers?.length) {
@@ -209,7 +210,7 @@
         `).join('');
 
         refHtml = `
-          <div class="ref-section" style="margin-top: 12px; border-top: 1px dashed #e3e2dd; padding-top: 8px;">
+          <div class="ref-section">
             <button class="ref-toggle-btn" onclick="toggleAccordion(this)">
               <span>References (${item.papers.length})</span>
               <span class="ref-chevron">▾</span>
@@ -224,13 +225,28 @@
       }
 
       card.innerHTML = `
-        <div style="font-size:0.75rem; font-weight:700; color:#78716c; text-transform:uppercase;">${labels[i]}</div>
+        <div style="font-size:0.75rem; font-weight:700; color:#78716c; text-transform:uppercase; letter-spacing:0.05em;">${labels[i]}</div>
         <div style="font-size:1.35rem; font-weight:700; letter-spacing:-0.02em;">${escHtml(item.category)}</div>
-        <div style="font-size:0.85rem; font-weight:600; color:#78716c;">${item.prob}% Confidence</div>
-        <div style="font-size:0.92rem; line-height:1.6; color:#57534e; margin-top:4px; word-break:keep-all;">${escHtml(item.desc)}</div>
+        
+        <div class="confidence-container">
+          <div style="display:flex; justify-content:space-between; font-size:0.85rem; font-weight:600; color:#78716c; margin-bottom:4px;">
+            <span>불량 유형 매칭 확률</span>
+            <span>${item.prob}%</span>
+          </div>
+          <div class="confidence-bar-bg">
+            <div class="confidence-bar-fill" id="gauge-${i}"></div>
+          </div>
+        </div>
+
+        <div style="font-size:0.92rem; line-height:1.6; color:inherit; margin-top:4px; word-break:keep-all;">${escHtml(item.desc)}</div>
         ${refHtml}
       `;
       grid.appendChild(card);
+
+      setTimeout(() => {
+        const fillBar = document.getElementById(`gauge-${i}`);
+        if (fillBar) fillBar.style.width = `${item.prob}%`;
+      }, 50);
     });
   }
 

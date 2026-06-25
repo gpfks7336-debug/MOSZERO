@@ -192,21 +192,22 @@ def analyze():
         top2_indices = np.argsort(final_probabilities)[::-1][:2]
         top2_raw = [(classes[i], float(final_probabilities[i])) for i in top2_indices]
 
+        # 단일 축 기반의 정갈하고 깔끔한 차트 구성
         fig = go.Figure()
         fig.add_trace(go.Scatter(
             x=voltage.tolist(), y=capacitance.tolist(),
-            mode="markers", name="원본 데이터",
-            marker=dict(color="#e5e5e5", size=4, opacity=0.6)
+            mode="markers", name="Raw Data",
+            marker=dict(color="#cbd5e1", size=4, opacity=0.6)
         ))
         fig.add_trace(go.Scatter(
             x=voltage.tolist(), y=capacitance_clean.tolist(),
-            mode="lines", name="LPF 필터 적용",
+            mode="lines", name="LPF Filtered",
             line=dict(color="#2563eb", width=2.5)
         ))
         fig.update_layout(
             template="plotly_white",
-            xaxis=dict(title="전압 (V)", showgrid=True, gridcolor="#f5f5f4"),
-            yaxis=dict(title="정전용량 (F)", showgrid=True, gridcolor="#f5f5f4"),
+            xaxis=dict(title="Voltage (V)", showgrid=True, gridcolor="#f5f5f4"),
+            yaxis=dict(title="Capacitance (F)", showgrid=True, gridcolor="#f5f5f4"),
             height=300,
             margin=dict(l=40, r=20, t=10, b=30),
             legend=dict(orientation="h", y=1.05, x=1, xanchor="right"),

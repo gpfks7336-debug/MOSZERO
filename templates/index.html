@@ -4,21 +4,22 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>MOS-ZERO Error Analyzer</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet" />
+  
+  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
   <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
 
   <style>
     /* 1. 글로벌 테마 및 레이아웃 초기화 */
     body {
       margin: 0;
-      padding: 40px 20px;
+      padding: 0;
       background-color: #fcfbf9; /* 따뜻한 라이트 스톤 */
-      font-family: 'Inter', 'Noto Sans KR', sans-serif;
+      font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
       color: #292524;
       transition: background-color 0.3s, color 0.3s;
+      -webkit-font-smoothing: antialiased;
     }
     html.dark body {
       background-color: #1c1917; /* 묵직한 다크 스톤 */
@@ -28,6 +29,7 @@
     .container {
       max-width: 1200px;
       margin: 0 auto;
+      padding: 40px 20px;
       display: flex;
       flex-direction: column;
       gap: 32px;
@@ -57,16 +59,23 @@
     .theme-btn.active { background: #ffffff; color: #292524; font-weight: 600; }
     html.dark .theme-btn.active { background: #1c1917; color: #f5f4f0; }
 
-    /* 3. 공통 컴포넌트 플랫 카드 (그림자X) */
+    /* 3. 공통 컴포넌트 프리미엄 소프트 카드 (미세 음영 레이어 추가) */
     .flat-card {
       background-color: #ffffff;
-      border: 1px solid #e3e2dd;
-      border-radius: 8px;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
       padding: 32px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.04), 0 2px 4px -1px rgba(0, 0, 0, 0.02);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
     html.dark .flat-card {
       background-color: #292524;
       border-color: #3a3531;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    }
+    .flat-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.04), 0 4px 6px -2px rgba(0, 0, 0, 0.04);
     }
 
     .section-label {
@@ -78,7 +87,7 @@
       margin-bottom: 16px;
     }
 
-    /* 4. 파일 업로드 영역 패치 */
+    /* 4. 파일 업로드 영역 */
     .upload-area {
       border: 1px dashed #e3e2dd;
       padding: 40px;
@@ -96,7 +105,7 @@
     html.dark .upload-label { color: #f5f4f0; }
     .file-name { margin-top: 12px; font-size: 0.9rem; color: #78716c; font-weight: 500; }
 
-    /* 5. X, Y축 셋팅 및 드롭다운(Select) 영역 (다크모드 완벽 반영) */
+    /* 5. X, Y축 셋팅 및 드롭다운 */
     .axis-mapping-container {
       margin-top: 24px;
       padding-top: 24px;
@@ -105,23 +114,11 @@
       gap: 20px;
       align-items: flex-end;
     }
-    html.dark .axis-mapping-container {
-      border-top-color: #3a3531;
-    }
+    html.dark .axis-mapping-container { border-top-color: #3a3531; }
 
-    .axis-group {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      flex: 1;
-    }
-    .axis-label {
-      font-size: 0.8rem;
-      font-weight: 600;
-      color: #78716c;
-    }
+    .axis-group { display: flex; flex-direction: column; gap: 6px; flex: 1; }
+    .axis-label { font-size: 0.8rem; font-weight: 600; color: #78716c; }
 
-    /* 드롭다운 양식 라이트/다크 자동 대응 */
     .axis-select {
       padding: 10px;
       border: 1px solid #e3e2dd;
@@ -131,22 +128,10 @@
       font-size: 0.9rem;
       outline: none;
       transition: all 0.2s;
+      font-family: inherit;
     }
-    html.dark .axis-select {
-      border-color: #57534e;
-      background-color: #1c1917;
-      color: #f5f4f0;
-    }
-    .axis-select option {
-      background-color: #ffffff;
-      color: #292524;
-    }
-    html.dark .axis-select option {
-      background-color: #1c1917;
-      color: #f5f4f0;
-    }
+    html.dark .axis-select { border-color: #57534e; background-color: #1c1917; color: #f5f4f0; }
 
-    /* 메인 분석 버튼 */
     .submit-btn {
       background-color: #292524;
       color: #ffffff;
@@ -157,13 +142,10 @@
       border-radius: 6px;
       cursor: pointer;
       transition: background-color 0.2s;
+      font-family: inherit;
     }
-    html.dark .submit-btn {
-      background-color: #57534e;
-      color: #f5f4f0;
-    }
+    html.dark .submit-btn { background-color: #57534e; color: #f5f4f0; }
     .submit-btn:hover { background-color: #44403c; }
-    html.dark .submit-btn:hover { background-color: #78716c; }
 
     /* 6. 결과 그리드 및 데이터 테이블 */
     .results-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
@@ -177,9 +159,21 @@
     .feature-table td.mono { font-family: monospace; font-weight: 500; color: #292524; }
     html.dark .feature-table td.mono { color: #d6d3d1; }
 
-    .diagnostic-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+    .diagnostic-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+    @media (max-width: 768px) { .diagnostic-grid { grid-template-columns: 1fr; } }
 
-    /* 7. 아코디언 내부 세련된 학술지 리포트 카드 */
+    .diagnostic-card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    html.dark .diagnostic-card { background: #292524; border-color: #3a3531; }
+
+    /* 7. 아코디언 내부 리포트 카드 */
     .academic-card {
       background: #ffffff;
       border: 1px solid #e3e2dd;
@@ -210,14 +204,12 @@
     .ai-summary-box { background: #fdfdfb; border-left: 4px solid #a8a29e; padding: 14px; border-radius: 0 4px 4px 0; }
     html.dark .ai-summary-box { background: #23201f; border-left-color: #57534e; }
     .ai-summary-tag { font-size: 0.75rem; font-weight: 700; color: #78716c; display: block; margin-bottom: 4px; }
-    html.dark .ai-summary-tag { color: #a8a29e; }
     .ai-summary-text { font-size: 0.9rem; color: #57534e; margin: 0; line-height: 1.6; }
     html.dark .ai-summary-text { color: #d6d3d1; }
 
     .view-paper-btn { align-self: flex-end; background-color: #44403c; color: #f5f4f0; padding: 8px 16px; font-size: 0.85rem; font-weight: 500; border-radius: 6px; text-decoration: none; }
     html.dark .view-paper-btn { background-color: #57534e; }
 
-    /* 8. 아코디언 토글 링크 버튼 스타일 */
     .ref-section { margin-top: 12px; border-top: 1px dashed #e3e2dd; padding-top: 8px; }
     html.dark .ref-section { border-top-color: #3a3531; }
     .ref-toggle-btn {
@@ -227,7 +219,215 @@
     .ref-chevron { transition: transform 0.2s; }
     .ref-toggle-btn.open .ref-chevron { transform: rotate(180deg); }
 
-    /* 9. 기타 상태 관리 유틸리티 */
+    /* 8. 🌟 [사진 속 둥글고 정갈한 화이트 카드형 툴팁 재현 패치] */
+    .tip-wrap {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .tip-badge {
+      position: relative !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      width: 16px !important;
+      height: 16px !important;
+      font-size: 10px !important;
+      font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif !important;
+      font-weight: 600 !important;
+      line-height: 1 !important;
+      padding-bottom: 1px !important;
+      background: #e2e8f0 !important;
+      color: #475569 !important;
+      border-radius: 50% !important;
+      cursor: help !important;
+    }
+    html.dark .tip-badge { background: #44403c !important; color: #cbd5e1 !important; }
+
+    .tip-text {
+      visibility: hidden;
+      position: absolute !important;
+      top: calc(100% + 8px) !important;
+      bottom: auto !important;
+      left: 0 !important;
+      transform: translateY(-4px) !important;
+
+      background-color: #ffffff !important;
+      color: #44403c !important;
+      text-align: left !important;
+      padding: 10px 14px !important;
+      border: 1px solid #b8b5b0 !important;
+      border-radius: 8px !important;
+      font-size: 0.82rem !important;
+      font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif !important;
+      font-weight: 400 !important;
+
+      width: max-content !important;
+      max-width: 240px !important;
+      white-space: normal !important;
+      word-break: keep-all !important;
+      line-height: 1.55 !important;
+      height: auto !important;
+      max-height: none !important;
+
+      z-index: 9999 !important;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.15s ease, transform 0.15s ease, visibility 0.15s;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12), 0 1px 4px rgba(0, 0, 0, 0.08) !important;
+    }
+
+    /* 🌟 다크 모드일 때는 눈부시지 않게 전용 다크 스톤 카드로 스마트 변환 */
+    html.dark .tip-text {
+      background-color: #292524 !important;
+      color: #f5f4f0 !important;
+      border-color: #44403c !important;
+    }
+
+    .tip-badge:hover .tip-text {
+      visibility: visible !important;
+      opacity: 1 !important;
+      transform: translateY(0) !important;
+    }
+
+    /* 9. 신뢰도 레이아웃 개편 -> "불량 유형 매칭 확률" 게이지 바 */
+    .confidence-container { margin: 10px 0; }
+    .confidence-bar-bg { background: #e2e8f0; border-radius: 9999px; height: 6px; overflow: hidden; width: 100%; }
+    html.dark .confidence-bar-bg { background: #44403c; }
+    .confidence-bar-fill {
+      background: linear-gradient(90deg, #78716c, #292524);
+      height: 100%;
+      border-radius: 9999px;
+      width: 0%;
+      transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    html.dark .confidence-bar-fill { background: linear-gradient(90deg, #a8a29e, #57534e); }
+
+    /* 10. 랜딩 섹션 */
+    .landing-section {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 80px 24px;
+      box-sizing: border-box;
+      border-bottom: 1px solid #e3e2dd;
+    }
+    html.dark .landing-section { border-bottom-color: #3a3531; }
+
+    .landing-inner {
+      max-width: 860px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+      text-align: center;
+    }
+
+    .landing-eyebrow {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: #78716c;
+    }
+
+    .landing-title {
+      font-size: clamp(3.2rem, 9vw, 6rem);
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      margin: 0;
+      color: #292524;
+      line-height: 1;
+    }
+    html.dark .landing-title { color: #f5f4f0; }
+
+    .landing-desc {
+      font-size: 1.05rem;
+      color: #78716c;
+      line-height: 1.75;
+      margin: 4px 0 0;
+      max-width: 480px;
+    }
+    html.dark .landing-desc { color: #a8a29e; }
+
+    .fault-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      width: 100%;
+      margin-top: 12px;
+    }
+    @media (max-width: 760px) { .fault-grid { grid-template-columns: repeat(2, 1fr); } }
+
+    .fault-card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 20px 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 10px;
+      text-align: left;
+      transition: box-shadow 0.2s ease, transform 0.2s ease;
+    }
+    html.dark .fault-card { background: #292524; border-color: #3a3531; }
+    .fault-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.07); }
+
+    .fault-icon-wrap {
+      width: 34px;
+      height: 34px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #f5f4f0;
+      border-radius: 8px;
+      color: #57534e;
+    }
+    html.dark .fault-icon-wrap { background: #3a3531; color: #a8a29e; }
+
+    .fault-name {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #292524;
+      line-height: 1.45;
+    }
+    html.dark .fault-name { color: #e7e5e4; }
+
+    .fault-tag {
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: #78716c;
+      background: #f5f4f0;
+      padding: 3px 8px;
+      border-radius: 4px;
+    }
+    html.dark .fault-tag { background: #3a3531; color: #a8a29e; }
+
+    .landing-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #292524;
+      color: #ffffff;
+      border: none;
+      padding: 15px 36px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      border-radius: 8px;
+      cursor: pointer;
+      font-family: inherit;
+      transition: background 0.2s, transform 0.15s;
+      margin-top: 12px;
+    }
+    html.dark .landing-cta { background: #f5f4f0; color: #1c1917; }
+    .landing-cta:hover { background: #44403c; transform: translateY(-1px); }
+    html.dark .landing-cta:hover { background: #e7e5e4; }
+
+    /* 11. 상태 관리 유틸리티 */
     .hidden { display: none !important; }
     .error-banner { background-color: #fef2f2; border: 1px solid #fca5a5; color: #991b1b; padding: 16px; border-radius: 6px; }
     .loading-area { text-align: center; padding: 20px; color:#78716c; }
@@ -235,8 +435,52 @@
 </head>
 <body>
 
-  <div class="container">
-    
+  <!-- 랜딩 섹션 -->
+  <section class="landing-section">
+    <div class="landing-inner">
+      <div class="landing-eyebrow">반도체 CV 분석 플랫폼</div>
+      <h1 class="landing-title">MOS-ZERO</h1>
+      <p class="landing-desc">반도체 C-V 커브 데이터를 업로드하면<br>불량 원인을 자동으로 분류합니다</p>
+
+      <div class="fault-grid">
+        <div class="fault-card">
+          <div class="fault-icon-wrap">
+            <i data-lucide="droplets" width="18" height="18"></i>
+          </div>
+          <div class="fault-name">Mobile Ion<br>Contamination</div>
+          <span class="fault-tag">Hysteresis</span>
+        </div>
+        <div class="fault-card">
+          <div class="fault-icon-wrap">
+            <i data-lucide="git-branch" width="18" height="18"></i>
+          </div>
+          <div class="fault-name">Interface Trap<br>Density Increase</div>
+          <span class="fault-tag">Stretch-out</span>
+        </div>
+        <div class="fault-card">
+          <div class="fault-icon-wrap">
+            <i data-lucide="layers" width="18" height="18"></i>
+          </div>
+          <div class="fault-name">Oxide Thickness<br>Out-of-Spec</div>
+          <span class="fault-tag">Cmax Decrease</span>
+        </div>
+        <div class="fault-card">
+          <div class="fault-icon-wrap">
+            <i data-lucide="activity" width="18" height="18"></i>
+          </div>
+          <div class="fault-name">Measurement<br>Setup Noise</div>
+          <span class="fault-tag">Noise Spike</span>
+        </div>
+      </div>
+
+      <button class="landing-cta" onclick="document.getElementById('analysisSection').scrollIntoView({behavior:'smooth'})">
+        분석 시작하기
+        <i data-lucide="arrow-down" width="18" height="18"></i>
+      </button>
+    </div>
+  </section>
+
+  <div class="container" id="analysisSection">
     <header class="header-row">
       <div>
         <h1 class="main-title">MOS-ZERO Error Analyzer</h1>
@@ -282,14 +526,13 @@
     <div id="errorArea" class="error-banner hidden"></div>
 
     <div id="resultsSection" class="hidden" style="display: flex; flex-direction: column; gap: 32px;">
-      
       <div class="results-grid">
         <div class="flat-card">
-          <div class="section-label">Signal Analysis</div>
+          <div class="section-label">신호 분석</div>
           <div id="plotlyChart"></div>
         </div>
         <div class="flat-card">
-          <div class="section-label">Extracted Features</div>
+          <div class="section-label">추출된 특성값</div>
           <table class="feature-table">
             <thead><tr><th>Parameter</th><th>Value</th></tr></thead>
             <tbody id="featureBody"></tbody>
@@ -298,7 +541,7 @@
       </div>
 
       <div class="flat-card">
-        <div class="section-label">Diagnostic Report</div>
+        <div class="section-label">진단 리포트</div>
         <div id="reportGrid" class="diagnostic-grid"></div>
       </div>
     </div>
@@ -307,5 +550,6 @@
   </div>
 
   <script src="{{ url_for('static', filename='script.js') }}"></script>
+  <script>lucide.createIcons();</script>
 </body>
 </html>
