@@ -30,22 +30,10 @@
     if (lastChartJson) rerenderChart();
   }
 
-  // Restore saved theme on load
   if (localStorage.getItem('theme') === 'dark') applyTheme(true);
 
   themeLightBtn.addEventListener('click', () => applyTheme(false));
   themeDarkBtn.addEventListener('click',  () => applyTheme(true));
-
-  // ── Step indicator ──
-  function setStep(n) {
-    [1, 2, 3].forEach(i => {
-      const el = document.getElementById(`step${i}`);
-      if (!el) return;
-      el.classList.remove('active', 'done');
-      if (i < n)      el.classList.add('done');
-      else if (i === n) el.classList.add('active');
-    });
-  }
 
   // ── Upload interactions ──
   uploadArea.addEventListener('click', () => fileInput.click());
@@ -82,7 +70,6 @@
       if (data.error) { showError(data.error); return; }
       populateSelects(data.columns);
       colSelectArea.classList.remove('hidden');
-      setStep(2);
     } catch {
       showError('파일 업로드 중 오류가 발생했습니다.');
     }
@@ -121,7 +108,6 @@
       analyzeBtn.disabled = false;
       if (data.error) { showError(data.error); return; }
       renderResults(data);
-      setStep(3);
     } catch {
       loadingArea.classList.add('hidden');
       analyzeBtn.disabled = false;
@@ -138,25 +124,23 @@
     resultsSection.classList.remove('hidden');
   }
 
-  // Patch Plotly layout/trace colors for current theme
   function applyChartTheme(chartObj) {
     if (isDark()) {
-      // Warm dark palette — stone/amber
-      chartObj.layout.paper_bgcolor = '#1c1917';
-      chartObj.layout.plot_bgcolor  = '#292524';
-      if (chartObj.layout.xaxis) { chartObj.layout.xaxis.gridcolor = '#3a3531'; chartObj.layout.xaxis.color = '#78716c'; }
-      if (chartObj.layout.yaxis) { chartObj.layout.yaxis.gridcolor = '#3a3531'; chartObj.layout.yaxis.color = '#78716c'; }
-      chartObj.layout.font = { ...(chartObj.layout.font || {}), color: '#a8a29e', family: 'DM Sans, sans-serif', size: 12 };
+      chartObj.layout.paper_bgcolor = '#292524';
+      chartObj.layout.plot_bgcolor  = '#1c1917';
+      if (chartObj.layout.xaxis) { chartObj.layout.xaxis.gridcolor = '#3a3531'; chartObj.layout.xaxis.color = '#a8a29e'; }
+      if (chartObj.layout.yaxis) { chartObj.layout.yaxis.gridcolor = '#3a3531'; chartObj.layout.yaxis.color = '#a8a29e'; }
+      chartObj.layout.font = { ...(chartObj.layout.font || {}), color: '#a8a29e', family: 'Inter, sans-serif', size: 12 };
       if (chartObj.data?.[0]?.marker) chartObj.data[0].marker.color = '#524b45';
-      if (chartObj.data?.[1]?.line)   chartObj.data[1].line.color   = '#e0b050';  // amber accent
+      if (chartObj.data?.[1]?.line)   chartObj.data[1].line.color   = '#e2e1da';
     } else {
-      chartObj.layout.paper_bgcolor = '#f5f4f0';
+      chartObj.layout.paper_bgcolor = '#ffffff';
       chartObj.layout.plot_bgcolor  = '#ffffff';
-      if (chartObj.layout.xaxis) { chartObj.layout.xaxis.gridcolor = '#e3e2dd'; chartObj.layout.xaxis.color = '#a8a29e'; }
-      if (chartObj.layout.yaxis) { chartObj.layout.yaxis.gridcolor = '#e3e2dd'; chartObj.layout.yaxis.color = '#a8a29e'; }
-      chartObj.layout.font = { ...(chartObj.layout.font || {}), color: '#57534e', family: 'DM Sans, sans-serif', size: 12 };
-      if (chartObj.data?.[0]?.marker) chartObj.data[0].marker.color = '#d4d1cb';
-      if (chartObj.data?.[1]?.line)   chartObj.data[1].line.color   = '#1e3a5f';
+      if (chartObj.layout.xaxis) { chartObj.layout.xaxis.gridcolor = '#e3e2dd'; chartObj.layout.xaxis.color = '#78716c'; }
+      if (chartObj.layout.yaxis) { chartObj.layout.yaxis.gridcolor = '#e3e2dd'; chartObj.layout.yaxis.color = '#78716c'; }
+      chartObj.layout.font = { ...(chartObj.layout.font || {}), color: '#292524', family: 'Inter, sans-serif', size: 12 };
+      if (chartObj.data?.[0]?.marker) chartObj.data[0].marker.color = '#cbd5e1';
+      if (chartObj.data?.[1]?.line)   chartObj.data[1].line.color   = '#44403c';
     }
     return chartObj;
   }
@@ -183,22 +167,13 @@
     features.forEach(f => {
       const tr = document.createElement('tr');
       tr.innerHTML = `
-        <td>
-          <span class="tip-wrap">
-            <strong style="font-weight:500;">${escHtml(f.name)}</strong>
-            <span class="tip-badge">?</span>
-            <span class="tip-text">${escHtml(f.tip)}</span>
-          </span>
-        </td>
+        <td><strong style="font-weight:600; color:#78716c;">${escHtml(f.name)}</strong></td>
         <td class="mono">${f.value}</td>
       `;
       tbody.appendChild(tr);
     });
   }
 
-  // ========================================================
-  // 10년 차 UI 전문가 개조 구역: 논문 리스트 레이아웃 전면 수정
-  // ========================================================
   function renderReport(top2) {
     const grid = document.getElementById('reportGrid');
     grid.innerHTML = '';
@@ -206,17 +181,18 @@
 
     top2.forEach((item, i) => {
       const card = document.createElement('div');
-      card.className = i === 0 ? 'report-card-primary' : 'report-card-secondary';
+      card.style.display = 'flex';
+      card.style.flexDirection = 'column';
+      card.style.gap = '12px';
 
       let refHtml = '';
       if (item.papers?.length) {
-        // 기존 밋밋한 리스트를 우리가 index.html에 추가한 고성능 카드 형태로 조립합니다.
-        const refItems = item.papers.map((p, j) => `
+        const refItems = item.papers.map((p) => `
           <div class="academic-card">
             <h4 class="academic-title">${escHtml(p.title)}</h4>
-            <div class="academic-meta">${escHtml(p.journal)}</div>
+            <div class="academic-meta-badge">${escHtml(p.journal)}</div>
             <div class="ai-summary-box">
-              <span class="ai-summary-tag">AI 분석 핵심 요약 및 인사이트</span>
+              <span class="ai-summary-tag">✦ AI 핵심 분석 및 연구 요약</span>
               <p class="ai-summary-text">${escHtml(p.summary)}</p>
             </div>
             <a href="${escHtml(p.link)}" target="_blank" rel="noopener noreferrer" class="view-paper-btn">
@@ -225,19 +201,16 @@
           </div>
         `).join('');
 
+        // 💡 누르면 스르륵 열리는 아코디언 토글 양식 원상복구 조치
         refHtml = `
-          <div class="ref-section" style="margin-top: 20px;">
+          <div class="ref-section" style="margin-top: 12px; border-top: 1px dashed #e3e2dd; padding-top: 8px;">
             <button class="ref-toggle-btn" onclick="toggleAccordion(this)">
-              <span class="ref-header-label">References</span>
-              <span class="ref-header-rule"></span>
+              <span>References (${item.papers.length})</span>
               <span class="ref-chevron">▾</span>
             </button>
             <div class="ref-entries hidden">
               <div class="papers-container">
                 ${refItems}
-              </div>
-              <div class="disclaimer" style="margin-top: 12px; font-size: 0.8rem; color: #94a3b8; font-style: normal;">
-                ※ 본 논문 정보는 AI가 매칭한 것으로 정확하지 않을 수 있습니다.
               </div>
             </div>
           </div>
@@ -245,17 +218,17 @@
       }
 
       card.innerHTML = `
-        <div class="finding-label">${labels[i]}</div>
-        <div class="${i === 0 ? 'defect-name-primary' : 'defect-name-secondary'}">${escHtml(item.category)}</div>
-        <span class="conf-stat">${item.prob}% confidence</span>
-        <div class="defect-desc">${escHtml(item.desc)}</div>
+        <div style="font-size:0.75rem; font-weight:700; color:#78716c; text-transform:uppercase;">${labels[i]}</div>
+        <div style="font-size:1.35rem; font-weight:700; letter-spacing:-0.02em;">${escHtml(item.category)}</div>
+        <div style="font-size:0.85rem; font-weight:600; color:#78716c;">${item.prob}% Confidence</div>
+        <div style="font-size:0.92rem; line-height:1.6; color:#57534e; margin-top:4px; word-break:keep-all;">${escHtml(item.desc)}</div>
         ${refHtml}
       `;
       grid.appendChild(card);
     });
   }
 
-  // ── Global accordion toggle ──
+  // ── Global accordion toggle 복구 ──
   window.toggleAccordion = btn => {
     const content = btn.nextElementSibling;
     const opening = content.classList.contains('hidden');
@@ -263,7 +236,6 @@
     btn.classList.toggle('open', opening);
   };
 
-  // ── Helpers ──
   function showError(msg) {
     errorArea.textContent = msg;
     errorArea.classList.remove('hidden');
