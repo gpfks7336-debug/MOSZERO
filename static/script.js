@@ -122,6 +122,9 @@
     renderFeatureTable(data.features);
     renderReport(data.top2);
     resultsSection.classList.remove('hidden');
+    resultsSection.classList.remove('fade-in');
+    void resultsSection.offsetWidth; // reflow 강제 트리거
+    resultsSection.classList.add('fade-in');
   }
 
   function applyChartTheme(chartObj) {

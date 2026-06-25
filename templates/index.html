@@ -133,7 +133,7 @@
     html.dark .axis-select { border-color: #57534e; background-color: #1c1917; color: #f5f4f0; }
 
     .submit-btn {
-      background-color: #292524;
+      background-color: #b45309;
       color: #ffffff;
       border: none;
       padding: 11px 24px;
@@ -144,8 +144,8 @@
       transition: background-color 0.2s;
       font-family: inherit;
     }
-    html.dark .submit-btn { background-color: #57534e; color: #f5f4f0; }
-    .submit-btn:hover { background-color: #44403c; }
+    html.dark .submit-btn { background-color: #d97706; color: #ffffff; }
+    .submit-btn:hover { background-color: #92400e; }
 
     /* 6. 결과 그리드 및 데이터 테이블 */
     .results-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
@@ -207,8 +207,8 @@
     .ai-summary-text { font-size: 0.9rem; color: #57534e; margin: 0; line-height: 1.6; }
     html.dark .ai-summary-text { color: #d6d3d1; }
 
-    .view-paper-btn { align-self: flex-end; background-color: #44403c; color: #f5f4f0; padding: 8px 16px; font-size: 0.85rem; font-weight: 500; border-radius: 6px; text-decoration: none; }
-    html.dark .view-paper-btn { background-color: #57534e; }
+    .view-paper-btn { align-self: flex-end; background-color: #b45309; color: #ffffff; padding: 8px 16px; font-size: 0.85rem; font-weight: 500; border-radius: 6px; text-decoration: none; }
+    html.dark .view-paper-btn { background-color: #d97706; }
 
     .ref-section { margin-top: 12px; border-top: 1px dashed #e3e2dd; padding-top: 8px; }
     html.dark .ref-section { border-top-color: #3a3531; }
@@ -296,13 +296,13 @@
     .confidence-bar-bg { background: #e2e8f0; border-radius: 9999px; height: 6px; overflow: hidden; width: 100%; }
     html.dark .confidence-bar-bg { background: #44403c; }
     .confidence-bar-fill {
-      background: linear-gradient(90deg, #78716c, #292524);
+      background: linear-gradient(90deg, #d97706, #b45309);
       height: 100%;
       border-radius: 9999px;
       width: 0%;
       transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
     }
-    html.dark .confidence-bar-fill { background: linear-gradient(90deg, #a8a29e, #57534e); }
+    html.dark .confidence-bar-fill { background: linear-gradient(90deg, #f59e0b, #d97706); }
 
     /* 10. 랜딩 섹션 */
     .landing-section {
@@ -313,8 +313,11 @@
       padding: 80px 24px;
       box-sizing: border-box;
       border-bottom: 1px solid #e3e2dd;
+      position: relative;
+      overflow: hidden;
     }
     html.dark .landing-section { border-bottom-color: #3a3531; }
+
 
     .landing-inner {
       max-width: 860px;
@@ -411,7 +414,7 @@
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      background: #292524;
+      background: #b45309;
       color: #ffffff;
       border: none;
       padding: 15px 36px;
@@ -423,21 +426,48 @@
       transition: background 0.2s, transform 0.15s;
       margin-top: 12px;
     }
-    html.dark .landing-cta { background: #f5f4f0; color: #1c1917; }
-    .landing-cta:hover { background: #44403c; transform: translateY(-1px); }
-    html.dark .landing-cta:hover { background: #e7e5e4; }
+    html.dark .landing-cta { background: #d97706; color: #ffffff; }
+    .landing-cta:hover { background: #92400e; transform: translateY(-1px); }
+    html.dark .landing-cta:hover { background: #b45309; }
 
     /* 11. 상태 관리 유틸리티 */
     .hidden { display: none !important; }
     .error-banner { background-color: #fef2f2; border: 1px solid #fca5a5; color: #991b1b; padding: 16px; border-radius: 6px; }
-    .loading-area { text-align: center; padding: 20px; color:#78716c; }
+
+    /* 12. 로딩 애니메이션 */
+    .loading-area { text-align: center; padding: 48px 20px; color: #78716c; display: flex; flex-direction: column; align-items: center; gap: 20px; }
+    .loading-dots { display: flex; gap: 8px; }
+    .loading-dots span {
+      width: 8px; height: 8px;
+      background: #b45309;
+      border-radius: 50%;
+      animation: dotPulse 1.2s ease-in-out infinite;
+    }
+    .loading-dots span:nth-child(2) { animation-delay: 0.2s; }
+    .loading-dots span:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes dotPulse {
+      0%, 80%, 100% { transform: scale(0.6); opacity: 0.3; }
+      40%           { transform: scale(1);   opacity: 1; }
+    }
+    .loading-label { font-size: 0.9rem; font-weight: 500; letter-spacing: 0.02em; }
+    .loading-sub { font-size: 0.78rem; color: #a8a29e; }
+
+    /* 13. 페이드인 애니메이션 */
+    @keyframes fadeSlideUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .fade-in {
+      animation: fadeSlideUp 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
   </style>
 </head>
 <body>
 
   <!-- 랜딩 섹션 -->
   <section class="landing-section">
-    <div class="landing-inner">
+
+<div class="landing-inner">
       <div class="landing-eyebrow">반도체 CV 분석 플랫폼</div>
       <h1 class="landing-title">MOS-ZERO</h1>
       <p class="landing-desc">반도체 C-V 커브 데이터를 업로드하면<br>불량 원인을 자동으로 분류합니다</p>
@@ -520,7 +550,11 @@
     </section>
 
     <div id="loadingArea" class="loading-area hidden">
-      <span>데이터 분석 알고리즘 가동 중...</span>
+      <div class="loading-dots">
+        <span></span><span></span><span></span>
+      </div>
+      <div class="loading-label">C-V 데이터 분석 중</div>
+      <div class="loading-sub">불량 원인 분류 알고리즘 가동 중...</div>
     </div>
 
     <div id="errorArea" class="error-banner hidden"></div>
