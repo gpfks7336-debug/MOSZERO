@@ -4,6 +4,9 @@
   let lastChartJson = null;
 
   // ── DOM refs ──
+  const step1El         = document.getElementById('step1');
+  const step2El         = document.getElementById('step2');
+  const step3El         = document.getElementById('step3');
   const uploadArea      = document.getElementById('uploadArea');
   const fileInput       = document.getElementById('fileInput');
   const fileNameEl      = document.getElementById('fileName');
@@ -70,9 +73,18 @@
       if (data.error) { showError(data.error); return; }
       populateSelects(data.columns);
       colSelectArea.classList.remove('hidden');
+      setStep(2);
     } catch {
       showError('파일 업로드 중 오류가 발생했습니다.');
     }
+  }
+
+  function setStep(n) {
+    [step1El, step2El, step3El].forEach((el, i) => {
+      el.classList.remove('active', 'done');
+      if (i + 1 < n)  el.classList.add('done');
+      if (i + 1 === n) el.classList.add('active');
+    });
   }
 
   function populateSelects(cols) {
@@ -121,10 +133,12 @@
     renderChart(data.chart);
     renderFeatureTable(data.features);
     renderReport(data.top2);
+    setStep(3);
     resultsSection.classList.remove('hidden');
     resultsSection.classList.remove('fade-in');
-    void resultsSection.offsetWidth; // reflow 강제 트리거
+    void resultsSection.offsetWidth;
     resultsSection.classList.add('fade-in');
+    setTimeout(() => resultsSection.scrollIntoView({ behavior: 'smooth', block: 'start' }), 80);
   }
 
   function applyChartTheme(chartObj) {
@@ -199,16 +213,18 @@
       let refHtml = '';
       if (item.papers?.length) {
         const refItems = item.papers.map((p) => `
-          <div class="academic-card">
-            <h4 class="academic-title">${escHtml(p.title)}</h4>
-            <div class="academic-meta-badge">${escHtml(p.journal)}</div>
-            <div class="ai-summary-box">
-              <span class="ai-summary-tag">✦ AI 핵심 분석 및 연구 요약</span>
-              <p class="ai-summary-text">${escHtml(p.summary)}</p>
+          <div class="paper-card">
+            <h4 class="paper-title">${escHtml(p.title)}</h4>
+            <div class="paper-journal">${escHtml(p.journal)}</div>
+            <div class="paper-summary-box">
+              <span class="paper-summary-label">AI 핵심 분석</span>
+              <p class="paper-summary-text">${escHtml(p.summary)}</p>
             </div>
-            <a href="${escHtml(p.link)}" target="_blank" rel="noopener noreferrer" class="view-paper-btn">
-              원문 보기 ➔
-            </a>
+            <div class="paper-footer">
+              <a href="${escHtml(p.link)}" target="_blank" rel="noopener noreferrer" class="paper-link-btn">
+                원문 보기 →
+              </a>
+            </div>
           </div>
         `).join('');
 

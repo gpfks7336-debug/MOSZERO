@@ -27,13 +27,15 @@ PAPER_KNOWLEDGE_BASE = {
                 "title": "Effects of mobile ion contamination on the electrical characteristics of MOS devices",
                 "journal": "IEEE Transactions on Electron Devices",
                 "link": "https://scholar.google.com/scholar?q=MOSCAP+mobile+ion+hysteresis",
-                "summary": "알칼리 가동성 이온(Na+, K+)이 산화막 전계에 따라 유동적으로 이동하여 플랫밴드 전압(Vfb) 히스테리시스를 유발함. 해결을 위해 전공정 세정 단계 최적화 및 HCl 게터링 열처리 기술 적용이 요구됨."
+                "summary": "알칼리 가동성 이온(Na+, K+)이 산화막 전계에 따라 유동적으로 이동하여 플랫밴드 전압(Vfb) 히스테리시스를 유발함. 해결을 위해 전공정 세정 단계 최적화 및 HCl 게터링 열처리 기술 적용이 요구됨.",
+                "match": 96
             },
             {
                 "title": "Mobile ion drift in MOS structures during high-temperature stress",
                 "journal": "Journal of Applied Physics",
                 "link": "https://scholar.google.com/scholar?q=mobile+ion+drift+MOS+high+temperature",
-                "summary": "고온 고전압 스트레스 환경 하에서 소자의 기생 누설 전류를 증폭시키는 핵심 요인. PDA 공정 온도 최적화 및 프리클리닝 이온 세정 강화가 필요함."
+                "summary": "고온 고전압 스트레스 환경 하에서 소자의 기생 누설 전류를 증폭시키는 핵심 요인. PDA 공정 온도 최적화 및 프리클리닝 이온 세정 강화가 필요함.",
+                "match": 88
             }
         ]
     },
@@ -44,13 +46,15 @@ PAPER_KNOWLEDGE_BASE = {
                 "title": "Characterization of interface traps in MOS structures by capacitance-voltage methods",
                 "journal": "Solid-State Electronics",
                 "link": "https://scholar.google.com/scholar?q=MOSCAP+interface+trap+stretch+out",
-                "summary": "실리콘 기판과 게이트 절연막 간 계면 불포화 결합에 의해 트랩 전하 밀도(Dit)가 상승함. 인가 게이트 바이어스 변화 시 트랩 전하의 충방전 지연으로 C-V 커브 기울기가 완만해짐."
+                "summary": "실리콘 기판과 게이트 절연막 간 계면 불포화 결합에 의해 트랩 전하 밀도(Dit)가 상승함. 인가 게이트 바이어스 변화 시 트랩 전하의 충방전 지연으로 C-V 커브 기울기가 완만해짐.",
+                "match": 93
             },
             {
                 "title": "Hydrogen passivation of interface traps in MOS devices",
                 "journal": "Applied Physics Letters",
                 "link": "https://scholar.google.com/scholar?q=hydrogen+passivation+interface+traps+MOS",
-                "summary": "포밍 가스 어닐링(FGA) 공정을 이용한 계면 수소 패시베이션 처리가 Dit 저감에 필수적임. 수소 분위기 열처리로 댕글링 본드를 효과적으로 제거 가능함."
+                "summary": "포밍 가스 어닐링(FGA) 공정을 이용한 계면 수소 패시베이션 처리가 Dit 저감에 필수적임. 수소 분위기 열처리로 댕글링 본드를 효과적으로 제거 가능함.",
+                "match": 85
             }
         ]
     },
@@ -61,13 +65,15 @@ PAPER_KNOWLEDGE_BASE = {
                 "title": "Impact of ultra-thin gate oxide thickness variations on MOS capacitance",
                 "journal": "Journal of Applied Physics",
                 "link": "https://scholar.google.com/scholar?q=MOSCAP+oxide+thickness+variation",
-                "summary": "물리적 산화막 증착 두께가 관리 공정 한계를 초과하면 타겟 Cmax 확보가 불가능함. ALD/CVD 장비 내 소스 분사 불균일 혹은 공정 온도 제어성 손실이 핵심 인자."
+                "summary": "물리적 산화막 증착 두께가 관리 공정 한계를 초과하면 타겟 Cmax 확보가 불가능함. ALD/CVD 장비 내 소스 분사 불균일 혹은 공정 온도 제어성 손실이 핵심 인자.",
+                "match": 91
             },
             {
                 "title": "ALD gate oxide uniformity control in advanced CMOS",
                 "journal": "IEEE Electron Device Letters",
                 "link": "https://scholar.google.com/scholar?q=ALD+gate+oxide+uniformity+CMOS",
-                "summary": "박막 증착 속도 프로파일 재검증 및 유전막 증착 전후 직렬 저항 성분 필터링 수반 권장. ALD 공정 균일도 개선이 Cmax 편차 감소에 직결됨."
+                "summary": "박막 증착 속도 프로파일 재검증 및 유전막 증착 전후 직렬 저항 성분 필터링 수반 권장. ALD 공정 균일도 개선이 Cmax 편차 감소에 직결됨.",
+                "match": 84
             }
         ]
     },
@@ -78,13 +84,15 @@ PAPER_KNOWLEDGE_BASE = {
                 "title": "Noise reduction techniques in high-frequency C-V characterization",
                 "journal": "Review of Scientific Instruments",
                 "link": "https://scholar.google.com/scholar?q=C-V+measurement+noise+reduction",
-                "summary": "계측 장비 프로브 팁 오염으로 인한 고접촉 저항 성분 형성 및 외부 전자기 노이즈 유입으로 고주파 스파이크 생성. Open/Short/Load 정밀 캘리브레이션 재실행 필요."
+                "summary": "계측 장비 프로브 팁 오염으로 인한 고접촉 저항 성분 형성 및 외부 전자기 노이즈 유입으로 고주파 스파이크 생성. Open/Short/Load 정밀 캘리브레이션 재실행 필요.",
+                "match": 89
             },
             {
                 "title": "Probe contact resistance effects in semiconductor C-V measurements",
                 "journal": "Measurement Science and Technology",
                 "link": "https://scholar.google.com/scholar?q=probe+contact+resistance+CV+measurement",
-                "summary": "전송 선로 간 임피던스 불일치 및 미세 기생 인덕턴스가 고주파 분석 정확도를 저해함. 동축 차폐회로(Shielding) 강화 조치 필요."
+                "summary": "전송 선로 간 임피던스 불일치 및 미세 기생 인덕턴스가 고주파 분석 정확도를 저해함. 동축 차폐회로(Shielding) 강화 조치 필요.",
+                "match": 81
             }
         ]
     }

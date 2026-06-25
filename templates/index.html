@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>MOS-ZERO Error Analyzer</title>
+  <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='favicon.svg') }}" />
   
   <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
@@ -434,7 +435,156 @@
     .hidden { display: none !important; }
     .error-banner { background-color: #fef2f2; border: 1px solid #fca5a5; color: #991b1b; padding: 16px; border-radius: 6px; }
 
-    /* 12. 로딩 애니메이션 */
+    /* 12. 스텝 바 */
+    .step-bar {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      padding: 20px 0 4px;
+    }
+    .step-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      opacity: 0.35;
+      transition: opacity 0.3s ease;
+    }
+    .step-item.active { opacity: 1; }
+    .step-item.done   { opacity: 0.55; }
+
+    .step-num {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: #e2e8f0;
+      color: #78716c;
+      font-size: 0.72rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: background 0.3s, color 0.3s;
+      font-family: -apple-system, BlinkMacSystemFont, Arial, sans-serif;
+    }
+    html.dark .step-num { background: #3a3531; color: #a8a29e; }
+
+    .step-item.active .step-num { background: #b45309; color: #ffffff; }
+    .step-item.done   .step-num { background: #57534e; color: #ffffff; }
+    html.dark .step-item.done .step-num { background: #57534e; }
+
+    .step-label {
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: #78716c;
+      white-space: nowrap;
+    }
+    html.dark .step-label { color: #a8a29e; }
+    .step-item.active .step-label { color: #292524; font-weight: 600; }
+    html.dark .step-item.active .step-label { color: #f5f4f0; }
+
+    .step-arrow {
+      padding: 0 14px;
+      color: #d4d2cd;
+      font-size: 0.75rem;
+      flex-shrink: 0;
+    }
+    html.dark .step-arrow { color: #3a3531; }
+
+    /* 13. 논문 카드 */
+    .paper-card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 20px 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 12px;
+      transition: box-shadow 0.2s ease, transform 0.2s ease;
+    }
+    html.dark .paper-card { background: #1c1917; border-color: #3a3531; }
+    .paper-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.08); }
+
+    .paper-card-top { display: flex; justify-content: flex-end; }
+
+    .paper-match-badge {
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: #b45309;
+      background: #fef3c7;
+      border: 1px solid #fde68a;
+      padding: 3px 10px;
+      border-radius: 20px;
+      letter-spacing: 0.03em;
+    }
+    html.dark .paper-match-badge { background: #451a03; color: #fbbf24; border-color: #78350f; }
+
+    .paper-title {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #1c1917;
+      line-height: 1.5;
+      margin: 0;
+    }
+    html.dark .paper-title { color: #f5f4f0; }
+
+    .paper-journal {
+      font-size: 0.75rem;
+      color: #78716c;
+      font-style: italic;
+    }
+    html.dark .paper-journal { color: #a8a29e; }
+
+    .paper-summary-box {
+      background: #fafaf9;
+      border-left: 3px solid #d97706;
+      padding: 10px 14px;
+      border-radius: 0 6px 6px 0;
+    }
+    html.dark .paper-summary-box { background: #292524; border-left-color: #b45309; }
+
+    .paper-summary-label {
+      font-size: 0.67rem;
+      font-weight: 700;
+      color: #b45309;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      display: block;
+      margin-bottom: 5px;
+    }
+    html.dark .paper-summary-label { color: #d97706; }
+
+    .paper-summary-text {
+      font-size: 0.82rem;
+      color: #57534e;
+      line-height: 1.65;
+      margin: 0;
+      word-break: keep-all;
+    }
+    html.dark .paper-summary-text { color: #a8a29e; }
+
+    .paper-footer { display: flex; justify-content: flex-end; }
+
+    .paper-link-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: #78716c;
+      text-decoration: none;
+      border: 1px solid #e2e8f0;
+      padding: 6px 14px;
+      border-radius: 6px;
+      transition: all 0.18s ease;
+    }
+    html.dark .paper-link-btn { border-color: #3a3531; color: #a8a29e; }
+    .paper-link-btn:hover { background: #b45309; color: #ffffff; border-color: #b45309; }
+
+    .papers-container { display: flex; flex-direction: column; }
+
+    /* 13. 로딩 애니메이션 */
     .loading-area { text-align: center; padding: 48px 20px; color: #78716c; display: flex; flex-direction: column; align-items: center; gap: 20px; }
     .loading-dots { display: flex; gap: 8px; }
     .loading-dots span {
@@ -527,6 +677,23 @@
       모델 파일을 찾을 수 없습니다. <code>output/hybrid_models.pkl</code> 경로의 리소스를 복구해 주세요.
     </div>
     {% else %}
+
+    <nav class="step-bar" id="stepBar">
+      <div class="step-item active" id="step1">
+        <div class="step-num">1</div>
+        <span class="step-label">파일 업로드</span>
+      </div>
+      <span class="step-arrow">→</span>
+      <div class="step-item" id="step2">
+        <div class="step-num">2</div>
+        <span class="step-label">축 설정</span>
+      </div>
+      <span class="step-arrow">→</span>
+      <div class="step-item" id="step3">
+        <div class="step-num">3</div>
+        <span class="step-label">결과 확인</span>
+      </div>
+    </nav>
 
     <section class="flat-card">
       <div class="upload-area" id="uploadArea">
